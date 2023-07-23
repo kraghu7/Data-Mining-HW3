@@ -1,0 +1,1114 @@
+---
+title: "IDS 572 HW3"
+author: "Kritika Raghuwanshi, Yaze Gao, Shixun Jiang"
+date: "`r Sys.Date()`"
+output: 
+  pdf_document:
+    latex_engine: lualatex
+header-includes:
+- \usepackage{sectsty} \sectionfont{\centering}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+```
+
+# Problem 1
+
+**Suppose we two different tests, T1 and T2 that detect a particular type of cancer. T1 had been evaluated on a population of 200 instances, out of which 100 were known to be suffering from cancer, while the remaining 100 were healthy. T2 had been evaluated on a different population of 1100 instances, out of which 100 were known to be suffering from cancer, while the remaining 1000 were healthy. The results of these tests are shown in the following confusion matrices, along with the values of the following evaluation measures: TPR, FPR, Precision, the F-measure, and TPR/FPR.**
+
+
+**(a) Calculate the TPR, FPR, Precision, F-score and TPR/FPR for both tests.**
+
+**A.**
+
+1. For Test T1:
+
+* TPR = TP / TP + FN = 40 / 40 + 60 = 0.4
+
+* FPR = FP / FP + TN = 10 / 10 + 90 = O.1
+
+* Precision = TP / TP + FP = 40 / 40 + 10 = 0.8
+
+* Recall = TP / TP + FN = 40 / 40 + 60 = 0.4
+
+* F-score = 2 (Precision * Recall) / Precision + Recall = 0.53
+
+* TPR/FPR = 0.4 / 0.1 = 4
+
+
+2. For Test T2:
+
+* TPR = TP / TP + FN = 40 / 40 + 60 = 0.4
+
+* FPR = FP / FP + TN = 55 / 55 + 945 = O.055
+
+* Precision = TP / TP + FP = 40 / 40 + 55 = 0.421
+
+* Recall = TP / TP + FN = 40 / 40 + 60 = 0.4
+
+* F-score = 2 (Precision * Recall) / Precision + Recall = 0.41
+
+* TPR/FPR = 0.4 / 0.055 = 7.27
+
+
+**(b) According to the F-score, which test is better?**
+
+**A.** Because the core idea of F-score is to improve the precision and recall as much as possible while hoping that the difference between precision and recall is as small as possible, the F- score of Test2 = 0.41, which is better than the F- score of Test1 = 0.53 from the F- score point of view.
+
+
+**(c) According to TPR/FPR, which test is better?**
+
+**A.** TPR/FPR is a measure of the trade-off between true positives and false positives, so Test2 has a higher value and therefore Test2 is better.
+
+
+**(d) For this question, which evaluation measure between F-score and TPR/FPR, should we use to make our selection between T1 and T2? Explain.**
+
+**A.**In this case, we should use two evaluation measures to choose between T1 and T2. the F-score measures the balance between accuracy and recall, while the TPR/FPR measures the trade-off between true positives and false positives. Thus, by considering both measures, we can get a more complete picture of each test's performance and make more informed decisions.
+
+\newpage
+
+\sectionfont{\centering}
+
+# Problem 2
+
+**Consider a classifier that classifies documents as being either relevant or non-relevant.**
+
+**(a) Which evaluation measure do we use for this classifier? Accuracy, precision, and/or recall? Justify your answer.**  
+
+**A.**  When evaluating the performance of a binary classifier that classifies documents as relevant or non-relevant, we should consider both Accuracy and Precision / Recall as evaluation metrics. 
+
+Accuracy measures the percentage of correct predictions made by the classifier, which is the ratio of the number of correctly classified documents to the total number of documents in the data set. However, accuracy alone may not be sufficient to evaluate the classifier's performance, especially when the data set is imbalanced. For example, if the data set contains a large proportion of non-relevant documents, a classifier that simply labels all documents as non-relevant will achieve a high accuracy but not be useful in practical applications.
+
+Precision measures the proportion of true positives (relevant documents correctly classified as relevant) to the total number of documents classified as relevant. It answers the question, "What proportion of the documents that the classifier identified as relevant were actually relevant?" Precision is important when we want to minimize false positives, i.e., when we don't want to classify non-relevant documents as relevant.
+
+Recall, on the other hand, measures the proportion of true positives to the total number of relevant documents in the data set. It answers the question, "What proportion of the relevant documents in the data set did the classifier correctly identify as relevant?" Recall is important when we want to minimize false negatives, i.e., when we don't want to miss any relevant documents.
+
+n summary, while accuracy is an important evaluation metric, **it may not provide a complete picture of the classifier's performance, especially when the data set is imbalanced**. Precision and recall provide additional insights into the classifier's performance in terms of minimizing false positives and false negatives, respectively. **Therefore, it is recommended to consider all three metrics when evaluating a classifier for document classification**.
+
+\newpage
+
+**(b) Suppose that we have a collection of 10 documents- named D1, ... D10- and two different classifiers A and B. Give an example of two result sets of documents, Aq and Bq, assumed to have been returned by two different systems in response to a query q, constructed such that Aq has clearly higher precision than Bq, but Aq and Bq have the same accuracy.**  
+
+**A.** This problem can be solved in a few different ways and there's no one correct answer, but here are a couple of scenarios:
+
+1. Example 1:
+
+Suppose the following relevance labels for the 10 documents:
+
+**Relevant: D1, D2, D3, D4**
+
+
+**Non-relevant: D5, D6, D7, D8, D9, D10**
+
+Now, suppose that both classifiers A and B are asked to retrieve the relevant documents for the query q, classifier A returns the following set of documents:
+
+* Aq = {D1, D2, D3}  
+
+Classifier B, on the other hand, returns a larger set of documents:
+
+* Bq = {D1, D2, D3, D5, D6}  
+
+Both sets have the same accuracy, which is the fraction of relevant and non-relevant documents correctly identified:
+
+* Accuracy = (3+5)/10 = 8/10 = 0.8
+
+However, Aq has higher precision than Bq, which is the fraction of retrieved documents that are relevant:
+
+* For classifier A, precision = (# of relevant documents in Aq) / (# of documents in Aq) = 3/3 = 1.0
+
+* For classifier B, precision = (# of relevant documents in Bq) / (# of documents in Bq) = 3/5 = 0.6
+
+In this example, **both classifiers have the same accuracy**, but **Aq has higher precision than Bq** because it returns fewer irrelevant documents. Classifier A retrieves only relevant documents, while classifier B retrieves two additional non-relevant documents, which reduces its precision.  
+
+\newpage
+
+**(c) Suppose a classifier returns 3 relevant documents and 2 irrelevant documents to a search query. There are a total of 8 relevant documents in the collection. What is the precision of the system on this search, and what is its recall?**  
+
+**A.**  
+
+1. Precision measures the fraction of relevant documents among the documents that the classifier returned as relevant. It is calculated as:
+
+* precision = TP / TP + FP
+
+* In our case, precision = number of relevant documents returned / total number of documents returned
+
+Since the classifier returned 3 relevant documents and 2 irrelevant documents. Therefore, the precision is: 
+
+* precision = 3 / (3 + 2) = 0.6
+
+Hence the Precision of the system is 0.6  or 60%.
+
+
+2. Recall measures the fraction of relevant documents among all the relevant documents in the collection. It is calculated as:
+
+* recall = TP / TP + FN
+
+* In this case, recall = number of relevant documents returned / total number of relevant documents in the collection
+
+Since there are a total of 8 relevant documents in the collection, and the classifier returned 3 relevant documents. Therefore, the recall is: 
+
+* recall = 3 / 8 = 0.375
+
+**Hence the Recall of the system is 0.375 or 37.5%**.
+
+\newpage
+
+\sectionfont{\centering}
+
+# Problem 3
+
+**We are looking to develop a machine learning algorithm to predict whether someone will pay a loan back or not.**
+
+**(a) What is the positive class?**  
+
+**A.** The positive class in this scenario would be the people / borrowers who pay back the loan.  
+
+
+**(b) What would a recall of 75% mean?**  
+
+**A.** A recall of 75% means that out of all the actual positive cases (people who paid back the loan), the algorithm correctly identified 75% of them as positive. In other words, 75% of the borrowers that would pay back the loan are approved by this system. We miss 25% (False Negatives / FN) of people that would have paid us back by rejecting them. In general, the problem with a low recall is that we are rejecting customers who we would have paid us back.  
+
+
+**(c) What would a precision of 85% mean?**  
+
+**A.** A precision of 85% means that out of all the predicted positive cases (people who the algorithm predicted would pay back the loan), 85% of them are actually positive (i.e., they actually paid back the loan). In other words, of all the loans we approve, 85% pay us back. The remaining 15% (False Positives / FP) of approved loans go into default.  
+
+
+**(d) Which measure do you choose to evaluate your model?**  
+
+**A.** In this example, we'd prefer precision over recall, as approving a bad loan is more costly than missing out on the profit we could make from a good loan. One measure that would be suitable for this problem is the **receiver operating characteristic (ROC) curve**. This curve plots the true positive rate (TPR) against the false positive rate (FPR) at various threshold values, and is a good way to visualize the trade-off between the two. The **area under the curve (AUC)** is also a popular metric for evaluating machine learning models, and is a good way to compare different models. The AUC ranges from 0 to 1, with a higher AUC indicating a better model.  
+
+In the context of loan repayment, a False Positive (FP) would be when the model predicts that a loan will be repaid, but the loan is actually not repaid. A False Negative (FN) would be when the model predicts that a loan will not be repaid, but the loan is actually repaid.  
+
+
+\newpage
+
+# Problem 4
+
+**(Random Forest in R) In this assignment, we want to construct machine learning models to predict the price of houses in California based on different predictors such as houses’ locations, number of rooms, and the number of people residing in a block using a dataset that was collected in 1990. To do so, download the dataset “housing.csv” from Blackboard. Notice that this dataset contains the price of houses in 1990. Since the housing prices have increased dramatically since then, we cannot generalize our model to predict the the current price of houses in California. The “housing” dataset contains 20640 observations and 10 variables (9 predictors and 1 response).**
+
+\sectionfont{\centering}
+
+# (a) Loading and Checking the Summary of Data
+
+**Q. Load the data set into R and check the summary of data.**
+
+**A.** First, we loaded the data set using the read.csv command and ran the summary function command:
+```{r housing}
+library(readr)
+housing <- read.csv("C:/housing.csv")
+summary(housing)
+```
+
+\newpage
+
+We notice that variable "ocean_proximity" is not numeric and can be converted into a factor, so we do that using the following command:
+```{r}
+housing$ocean_proximity = as.factor(housing$ocean_proximity)
+str(housing)
+summary(housing)
+```
+
+\newpage
+
+\sectionfont{\centering}
+
+# (b) Cleaning the Data
+
+**Q. Cleaning the data: Are there any outliers or missing values in this dataset? How do you handle them if there are any? Make sure you check both numerical and categorical variables.**
+
+**A.** In the above result, we notice a couple of things, which we need to take care of in order to clean the data set:
+
+1. 207 observations in the variable **"total_bedrooms"** have NA values
+
+```{r}
+sum(is.na(housing))
+```
+
+2. Number of observations in the variable **"ocean_proximity"**, with value "ISLAND", is only 5, which is very less compared to others:
+
+```{r}
+library(ggplot2)
+ggplot(housing, aes(x = factor(ocean_proximity))) + 
+geom_bar(stat = "count", color = "black", fill = "#006994", labels = TRUE) +
+geom_text(aes(label = after_stat(count)), 
+stat = "count", vjust = -0.2, colour = "black")
+```
+
+\newpage
+
+In order to fix these problems, we take the following steps:
+
+1. To solve the **problem of the 207 NA's**, we decided to impute the data points, which we can do by looking at the frequency distribution of this variable, as follows:
+
+```{r}
+library(ggplot2)
+mean_bedroom <- mean(housing$total_bedrooms, na.rm = TRUE)
+median_bedroom <- median(housing$total_bedrooms, na.rm = TRUE)
+ggplot(housing, aes(x = total_bedrooms)) + 
+geom_histogram(bins = 30, color = "black", fill = "#007bae") +
+geom_vline(aes(xintercept = mean_bedroom, color = "Mean"), linewidth = 1.5) +
+geom_vline(aes(xintercept = median_bedroom, color = "Median"), linewidth = 1.5) +
+xlab("Total Bedrooms") +
+ylab("Frequency") +
+ggtitle("Histogram of Total Bedrooms") +
+scale_color_manual(name = "Summary Stats", labels = c("Mean", "Median"),
+values = c("red", "green"))
+```
+
+\newpage
+
+Looking at the above data, we decided to take median of the **total_bedrooms** variables for our data point imputation:
+
+```{r}
+housing$total_bedrooms[is.na(housing$total_bedrooms)] = median_bedroom
+sum(is.na(housing))
+```
+
+\newpage
+
+2. To solve the problem of the observations with a value of "ISLAND" in the **ocean_proximity"**, we simply exclude this level from the variable, as it could lead to more issues with model fitting later. This can be done as follows:
+
+```{r}
+housing <- housing[housing$ocean_proximity != "ISLAND", ]
+ggplot(housing, aes(x = factor(ocean_proximity))) + 
+geom_bar(stat = "count", color = "black", fill = "#006994") +
+geom_text(aes(label = after_stat(count)), 
+stat = "count", vjust = 1.5, colour = "white")
+```
+
+\newpage
+
+\sectionfont{\centering}
+
+# (c) Plot to Visualize all Data Points (ggplot)
+
+**Q. Use the ggplot() function to visualize all data points in the data set with longitude on the x-axis, latitude on the y-axis, and median_house_value in shown in color codes. Change the size of the points represented in your plot based on the size of the population. Do not forget to add a title, legend, and label for each axis. What do you observe from this plot?**
+
+**A.** To get a visual representation of all the data points in the data set with **longitude** on the X-axis, **latitude** on the y-axis, and the **median_house_value** shown in color, here's the code:
+
+```{r}
+plot = ggplot(housing, 
+aes(x = longitude, y = latitude, color = median_house_value)) +
+geom_point(aes(size = population), alpha = 0.4) +
+xlab("Longitude") +
+ylab("Latitude") +
+ggtitle("Data Map - Longtitude vs Latitude") +
+theme(plot.title = element_text(hjust = 0.5)) +
+scale_color_distiller(palette = "Paired", labels=scales::comma) +
+labs(color = "Median House Value in US Dollars", size = "Population")
+
+plot
+```
+
+\newpage
+
+\sectionfont{\centering}
+
+# (d) Distribution of Numeric Variables
+
+**Q. For a better sense of the distribution of the nine numeric variables, Look at histograms for each of them and describe your observation. Add all these histograms in one plot using par(mfrow = c(3, 3)).**
+
+**A.** In order to get a distribution of the nine numerical variables using histograms, we can use the hist function and to display them side by side, we can use the par(mfrow..) function as follows:
+
+```{r}
+options(scipen = 5) # to remove scientific notations
+par(mfrow = c(3,3))
+hist(housing$longitude, main = "longitude",
+breaks = 10, col = "#FF5675", border = "black")
+
+hist(housing$latitude, main = "latitude",
+breaks = 10, col = "#FF5675", border = "black")
+
+hist(housing$housing_median_age, main = "housing_median_age",
+breaks = 10, col = "#FF5675", border = "black")
+
+hist(housing$total_rooms, main = "total_rooms", 
+breaks = 10, col = "#FF5675", border = "black")
+
+hist(housing$total_bedrooms, main = "total_bedrooms",
+breaks = 10, col = "#FF5675", border = "black")
+
+hist(housing$population, main = "population",
+breaks = 10, col = "#FF5675", border = "black")
+
+hist(housing$households, main = "households", 
+breaks = 10, col = "#FF5675", border = "black")
+
+hist(housing$median_income, main = "median_income", 
+breaks = 10, col = "#FF5675", border = "black")
+
+hist(housing$median_house_value, main = "median_house_value",
+breaks = 10, col = "#FF5675", border = "black")
+```
+
+\newpage
+
+\sectionfont{\centering}
+
+# (e) Relationship between Variables (Pairs function)
+
+**Q. Look at the relationship between all variables using the pair() function. Describe any noteworthy observations.**
+
+**A.** In order to see how each variable is related to each other, we use the pairs() function as follows:
+
+```{r}
+par(mfrow = c(1, 1))
+pairs(housing, col = "#007bae")
+```
+
+### Observation
+
+We see the relationship between all variables, but also notice that **"ocean_proximity"** doesn't add much to the chart due to collinearity, so we should get rid of that and only keep the relationship between the numeric variables. Secondly, we can also observe in the graphs for **household**, **total_rooms**, and **total_bedrooms** variables that there might be some relationship between them. However, we can't suggest that yet unless we look at the correlation between the variables.
+
+\newpage
+
+\sectionfont{\centering}
+
+# (f) Correlation between Variables
+
+**Q. Check the correlation between your variables. Are there any highly correlated variables? If yes, how do you handle them?**
+
+**A.** In order to look into the correlation between all variables, we made use of the cor() function. However, before we do that, we remove *"ocean_proximity"* variable from the considerations as mentioned in the previous section. Lastly, we display the result using the kable() function.
+
+```{r}
+library(knitr)
+library(kableExtra)
+correlation <- round(cor(housing[, 1:9]), digits = 2)
+
+kable(correlation,
+      format="latex", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("striped", "scale_down")) %>%
+  column_spec(1,width = "1in") %>%
+  column_spec(2,width = "1in") %>%
+  column_spec(3,width = "1in") %>%
+  column_spec(4,width = "1in") %>%
+  column_spec(5,width = "1in") %>%
+  column_spec(6,width = "1in") %>%
+  column_spec(7,width = "1in") %>%
+  column_spec(8,width = "1in") %>%
+  column_spec(9,width = "1in")
+```
+
+**In order to fit the whole table on one page, we had to use the kableExtra package and scale down the whole thing**
+
+## Correlation Observations 
+
+Based on the result below, we can see that there is high collinearity between **housholds** and **total_bedrooms** variables, as well as between **households** and **total_rooms** variables, which confirms our *theory* above. Even though they're highly collinear, it's best to leave them in the data set, as they could be influential when determining the price of a home. This can cause issues with multicollinearity, but we can handle that later if we run into an issue.
+
+\newpage
+
+\sectionfont{\centering}
+
+# (g) Train & Test Data
+
+**Q. Partition your data into a train and a test data.**
+
+**A.** In order to divide our data into train and test data, we first set the seed value to 1, which would give us an equal split each time. Secondly, we're choosing 70% and 30% split into train and test data respectively. Also, since we'll be creating two different models in this exercise, we copy the contents of the housing data set into a clone called **housing_rf**. To do this, we use the following code below:
+
+```{r}
+set.seed(1)
+index_rf <- sample(2, nrow(housing), replace= TRUE, prob = c(0.75, 0.25))
+train_rf <- housing[index_rf == 1,  ]
+test_rf <- housing[index_rf == 2, ]
+```
+
+\newpage
+
+\sectionfont{\centering}
+
+# (h) Random Forest Model
+
+**Q. Use your training data to construct a random forest model.**
+
+**A.** Before we create a Random Forest model, we need to consider the important data point for our model, so we consider median_house_value as that variable, which could be our target variable. Since this is not converted into a categorical variable, the randomForest method assumes it's a regression model and provides information accordingly.
+
+```{r, message=FALSE}
+library(randomForest)
+rf_housing <- randomForest(median_house_value ~ ., data = train_rf,
+ntree = 500, mtry = 4, proximity = T, importance = T)
+```
+
+In the above model, we're considering **ntree** to be 500, as it denotes the number of trees considered in the Random Forest, so we're essentially creating a random forest model with 500 trees. **mtry** indicates the number of variables randomly sampled as candidates at each split. For our model, we're taking **mtry** to be 4. To get the proximity matrix and important variables suggested by this model, we've set proximity and importance to be true.
+
+\newpage
+
+\sectionfont{\centering}
+
+# (i) Model's Performance on Training Examples
+
+**Q. How does your model perform on the training examples? Is a linear model a good model to predict the California housing prices? Justify your answer.**
+
+**A.** Model's performance on the training set can be viwed using the following codes:
+
+```{r, results='asis'}
+print(rf_housing)
+names(rf_housing)
+```
+
+We plot the error rates with various number of trees:
+
+```{r}
+plot(rf_housing)
+```
+\newpage
+
+Finally, we obtain the predicted classes and the Mean Squared Error (MSE) on the training data set using the following codes:
+
+```{r}
+head(rf_housing$predicted, n=50)
+head(rf_housing$mse, n = 50)
+```
+
+\newpage
+
+\sectionfont{\centering}
+
+# (j) Variables Considered Important for Random Forest Model
+
+**Q. What variables are considered important for your predictions using your random forest model?**
+
+**A.** We obtain the importance of the variables using the importance() and varImpPlot() methods as follows:
+
+```{r}
+importance(rf_housing, type = 1)
+importance(rf_housing, type = 2)
+```
+
+\newpage
+```{r}
+varImpPlot(rf_housing)
+```
+
+%IncMSE shows how much our model's accuracy will decrease if we leave out a variable. IncNodePurity is a measure of variable's importance based on the Gini impurity index used for calculating the splits in the trees. The higher the value of mean decrease accuracy or mean decrease gini score, the higher the importance of the variable to our model. Per the plots, we can see that **median_income** is the most important variable in our random forest model, as it's got the highest value in both the %IncMSE chart (type = 1) and the IncNodePurity chart (type = 2). After that, it's **ocean_proximity**, which also makes sense as we can determine the median house value based on a person's median income (as in the ability to buy) and the proximity to the ocean, which directly impacts the cost. We also see that **housing_median_age** comes in at 3rd position with 91% %IncMSE, but on the second factor, IncNodePurity, longitude comes in at 3rd position.
+
+\newpage
+
+\sectionfont{\centering}
+
+# (k) Performance of Random Forest Model on Test Instance
+
+**Q. How is the performance of your model on the test instances?**
+
+**A.** To test the performance of our Random Forest Model, we perform the following calculations:
+
+```{r}
+pred_rf <- predict(rf_housing, newdata = test_rf)
+head(pred_rf, n=50)
+```
+
+Finally, we also check a couple of parameters and how they perform against our Random Forest Model, one is called Mean Absolute Error (MAE) and the other is Mean Squared Error (MSE). MAE is the average distance between the real data and the predicted data. MSE measures the average squared difference between the estimated values and the actual value. The main draw for using MSE is that it squares the error, which results in large errors being clearly highlighted.
+
+```{r}
+true_value_rf <- test_rf$median_house_value
+```
+
+Mean Absolute Error (MAE) of this model is:
+```{r, message=FALSE}
+library(Metrics)
+library(caret)
+MAE(pred_rf, test_rf$median_house_value)
+```
+
+Mean Squared Error (MSE) of this model is:
+```{r}
+mse_rf <- mean((pred_rf - true_value_rf)^2)
+print(mse_rf)
+```
+
+The value of MSE is high, which isn't ideal for our model.
+
+\newpage
+
+\sectionfont{\centering}
+
+# (l) Decision Tree Model
+
+**Q. Construct a decision tree model to predict the median_house_value using your training data. Play with the pruning parameters to check how they affect the performance of your decision tree model. Justify your final choice of these parameters.**
+
+**A.** To construct the decision tree model, we first divide our dataset into train and test data like we did above with the Random Forest model:
+
+```{r}
+set.seed(1)
+index_dt <- sample(2, nrow(housing), replace= TRUE, prob = c(0.75, 0.25))
+train_dt <- housing[index_dt == 1,  ]
+test_dt <- housing[index_dt == 2, ]
+```
+
+After this division, we build a decision tree model using the "rpart" function from "rpart" package. The first and second arguments to the rpart function are respectively the formula and training data. We're using default **cp** of 0.01, which means any split that does not reduce the tree's overall complexity by a factor of 0.01, is not attempted. The code for that is as follows:
+
+```{r, message=FALSE}
+library(rpart)
+dt_model <- rpart(median_house_value ~ ., train_dt)
+print(dt_model)
+```
+
+\newpage
+
+To plot an rpart decision tree we can use the "rpart.plot()" function from "rpart.plot" package:
+```{r, results='asis'}
+library(rpart.plot)
+rpart.plot(dt_model, box.palette = "RdYlGn", type = 4,
+main = "Decision Tree with Default CP")
+rpart.rules(dt_model)
+```
+
+\newpage
+
+Summary of the default model is:
+
+```{r}
+summary(dt_model)
+```
+
+\newpage
+
+# Model with split = "information", cp = 0.05
+
+In the above section, we used a default cp of 0.01, but if we try to run this model with different pruning parameters like cp=0.05, split = information, etc., we're seeing different results as follows:
+
+```{r}
+dt_model1 <- rpart(median_house_value ~ ., train_dt,
+parms = list(split = "information"), 
+control = rpart.control(minbucket = 3, minsplit = 5, cp = 0.05))
+print(dt_model1)
+rpart.plot(dt_model1, box.palette = "RdYlGn", type = 4,
+main = "Decision Tree CP = 0.05")
+```
+
+\newpage
+
+Rules for this model are as follows:
+
+```{r, results='asis'}
+rpart.rules(dt_model1)
+```
+
+\newpage
+
+Summary of the model with cp = 0.05 is:
+
+```{r}
+summary(dt_model1)
+```
+
+\newpage
+
+# Model with split = "gini", cp = 0.09
+
+When we try to run this model with different pruning parameters like cp=0.09, split = Gini, etc., we're seeing different results as follows:
+
+```{r}
+dt_model2 <- rpart(median_house_value ~ ., train_dt,
+parms = list(split = "gini"), 
+control = rpart.control(minbucket = 3, minsplit = 5, cp = 0.09))
+print(dt_model2)
+rpart.plot(dt_model2, box.palette = "RdYlGn", type = 4,
+main = "Decision Tree with CP = 0.09")
+```
+
+\newpage
+
+Rules for this model are as follows:
+
+```{r, results='asis'}
+rpart.rules(dt_model2)
+```
+
+\newpage
+
+Summary of the model with cp = 0.09 is:
+
+```{r}
+summary(dt_model2)
+```
+
+\newpage
+
+# Model with split = "information", cp = 0 (fully grown tree)
+
+When we try to run this model with different pruning parameters like cp=0 (fully grown tree), split = information, etc., we're seeing different results as follows. Since a full tree of this magnitude renders a big tree, we used **maxdepth** parameter, to give it a more balanced look. By default the max depth value is 30, so we changed it to **3**.
+
+```{r, results='asis'}
+dt_model3 <- rpart(median_house_value ~ ., train_dt,
+parms = list(split = "information"), 
+control = rpart.control(minbucket = 3, minsplit = 5, maxdepth = 3, cp = 0))
+print(dt_model3)
+rpart.plot(dt_model3, box.palette = "RdYlGn",
+main = "Fully Grown Decision Tree with MaxDepth 3")
+```
+
+\newpage
+
+Rules for this model are as follows:
+
+```{r, results='asis'}
+rpart.rules(dt_model3)
+```
+
+\newpage
+
+Summary of the model is as follows:
+
+```{r}
+summary(dt_model3)
+```
+
+\newpage
+
+# Pruning Parameters Observation
+
+Based on playing with the pruning parameters, we notice the following:
+
+1. Default cp (0.01) - the most in-depth tree outside of the full tree:
++ The model predicts the median_house_value to be **$436,499** when **median_income is >= 7.3**.
++ The model predicts the median_house_value to be **$140,764** when **median_income is 3.0 to 5.1 and ocean_proximity is INLAND**.
+
+2. cp value of 0.05, minbucket=3, minsplit=5 & split = "information" - Here we see the same tree as above, but it doesn't branch further after yes = ocean_proximity(value=INLAND) and no = median_income(value<7.3), so it doesn't give us in-depth view of the tree.
+
++ The model predicts the median_house_value to be **$436,499** when **median_income is >= 7.3**.
++ The model predicts the median_house_value to be $112,417 when **median_income is < 5.1 & ocean_proximity is INLAND**.
+
+3. cp value of 0.09, minbucket=3, minsplit=5 & split = "gini" - Here we see that the root node doesn't branch further into median_income(value<6.8), instead only branches into ocean_proximity(value=INLAND). This is not as good as the first two options.
+
++ The model predicts the median_house_value to be **$333,045** when **median_income is >= 5.1**.
++ The model predicts the median_house_value to be $112,417 when **median_income is < 5.1 & ocean_proximity is INLAND**.
+
+4. cp value of 0 - Here we see that a full blown tree is formed, but it had 1000+ nodes to cover, so the plot has overplotting in R and also the rules don't return a value, as it can't render a result with more than 1000 values. We had to reduce the MaxDepth to 3 to avoid over plotting.
+
+\newpage
+
+\sectionfont{\centering}
+
+# (m) Variables Considered Important for Decision Tree Model
+
+**Q. What are the important variables suggested by your decision tree model? Are they the same as what you got from the random forest model?**
+
+**A.** Based on the summaries of the three models above (dt_model, dt_model1, and dt_model2), we notice that the two most important variables for the Decision Tree are **median_income** and **ocean_proximity**. **This is the same thing we noticed in the Random Forest model as well, where the same variable were considered most important to the model**. These two have the highest number in the variable importance section of "Summary" function.
+
+1. Default model - **median_income** has a variable importance of **63** and **ocean_proximity** has a variable importance of **22**.
+2. Model with cp = 0.05 - **median_income** has a variable importance of **66** and **ocean_proximity** has a variable importance of **24**.
+3. Model with cp = 0.09 - **median_income** has a variable importance of **62** and **ocean_proximity** has a variable importance of **26**.
+4. Model with cp = 0 - **median_income** has a variable importance of **58** and **ocean_proximity** has a variable importance of **20**.
+
+\newpage
+
+\sectionfont{\centering}
+
+# (n) Performance of Decision Tree Model on Test Instance
+
+**Q. How is the performance of your decision tree model on the test instances?**
+
+**A.** In order to get the performance of the decision tree we've built on the test instance, we can calculate the Mean Absolute Error (MAE) and Mean Squared Error(MSE) values like we did in our Random Forest Model. The code for that is as follows:
+
+```{r}
+pred_dt <- predict(dt_model, newdata = test_dt)
+head(pred_dt, n=50)
+```
+
+Mean Absolute Error (MAE) of this model is:
+```{r, message=FALSE}
+library(Metrics)
+library(caret)
+MAE(pred_dt, test_dt$median_house_value)
+```
+
+Mean Squared Error (MSE) of this model is:
+```{r}
+true_value_dt <- test_dt$median_house_value
+mse_dt <- mean((pred_dt - true_value_dt)^2)
+print(mse_dt)
+```
+
+\newpage
+
+\sectionfont{\centering}
+
+# (o) Which Model is Best?
+
+**Q. Which model (random forest vs decision tree) performs better? Why?**
+
+**A.** Both models don't quite perform well on this data set, but out of the two, we can go with the lower MSE value, which is **Random Forest**. The lower MSE sets the Random Forest model apart from the Decision Tree model. Also, Random Forest is giving us accurate predictions compared to the other model.
+
+\newpage
+
+\sectionfont{\centering}
+
+# Problem 5
+
+**(Building models in R) Phishing attacks are the most common type of cyber-attacks used to trick users into clicking on phishing links, stealing user information, and ultimately using user data to fake logging in with related accounts to steal funds. Phishing attacks have been affecting individuals as well as organizations across the globe. In this question, we want to build a machine learning model to detect website phishing. To do so, download the “Phising websites” data set from UCI Machine Learning Repository. Before constructing any models, explore this data set and clean it if required. Construct a decision tree, naive Bayes, and a random forest model to detect phishing websites from the legitimate. Use cross-validation to check the performance of your models. Which model will be chosen as your final model? What evaluation measure(s) do you use to select the best model? Justify your answer.**
+
+
+```{r}
+library(caret)
+library(randomForest)
+library(e1071)
+library(rpart)
+```
+
+
+```{r}
+# Load the foreign package
+library(foreign)
+
+# Read in the ARFF file
+data <- read.arff("C:/Training Dataset.arff")
+
+# Write the data to a CSV file
+write.csv(data, file = "data.csv", row.names = FALSE)
+```
+
+```{r}
+# Display the dataset structure
+str(data)
+# Display the dataset summary statistics
+summary(data)
+```
+
+The data set has 31 columns and 11,055 rows, and all columns are of the integer data type. The target variable is the "Result" column, which has two values: "1" for a phishing website and "0" for a legitimate website.
+
+\newpage
+
+Next, we will check for missing values and duplicate rows in the data set:
+
+```{r}
+# Check for missing values
+sum(is.na(data))
+# Check for duplicate rows
+sum(duplicated(data))
+```
+
+There are no missing values or duplicate rows in the data set. Thus, the data set is clean and ready for modeling.
+
+Split into training data and testing data:
+We will now split the data set into training and testing sets, with a **70:30** split. 
+
+```{r}
+# Split the dataset into training and testing sets
+set.seed(123)
+trainIndex <- createDataPartition(data$Result, p = 0.7, list = FALSE, times = 1)
+trainset <- data[trainIndex, ]
+testset <- data[-trainIndex, ]
+```
+
+```{r}
+# Build a decision tree model
+tree_model <- rpart(Result ~ ., data = trainset, method = "class")
+# Build a naive Bayes model
+nb_model <- naiveBayes(Result ~ ., data = trainset)
+# Build a random forest model
+rf_model <- randomForest(Result ~ ., data = trainset, ntree = 500)
+```
+
+\newpage
+
+# Decision tree
+
+First create the classification tree using the default 'cp' and compare the 'Result' variable with all predictors.
+
+```{r}
+library(rpart)
+fishing_tree_model1_train <- rpart(Result ~., trainset)
+print(fishing_tree_model1_train) 
+```
+```{r}
+library(rpart.plot)
+rpart.plot(fishing_tree_model1_train, main = "Decision Tree with Default CP")
+```
+
+When SSLfinal State=-1,0 this website is phishing website, this part is **45%**. When SSLfinal State=1, according to URL of anchorz again classified, **2%** is phishing website, **55%** is legitimate website.
+
+```{r}
+tree_pred_prob1 <- predict(fishing_tree_model1_train, trainset, type = "prob")
+tree_pred_class1 <- predict(fishing_tree_model1_train, trainset, type = "class")
+```
+ 
+```{r}
+testerror_train <- mean(tree_pred_class1 != trainset$Result)
+print(testerror_train)
+```
+
+Error rate of our decision tree model on train data is **0.097174312**.
+
+```{r}
+tree_pred_test1 <- predict(fishing_tree_model1_train, testset, type = "class")
+testerror_test1 <- mean(tree_pred_test1 != testset$Result)
+print(testerror_test1)
+```
+
+Error rate of our decision tree model on test data is **0.109831122**.
+
+```{r}
+t1 <- table(tree_pred_test1, testset$Result)
+acc1 <- sum(diag(t1))/nrow(testset)*100
+print(acc1)
+```
+
+We calculated the accuracy of model is **90.16888**.
+
+\newpage
+
+# Fully Grown Decision Tree 
+```{r}
+tree_model_full <- rpart(Result ~ ., trainset,
+parms = list(split = "information"),
+control = rpart.control(minbucket = 0, minsplit = 0, maxdepth = 10, cp = 0))
+rpart.plot(tree_model_full, main = "Fully Grown Decision Tree")
+```
+```{r}
+pred_test_model_full <-
+predict(tree_model_full, testset, type = "class")
+error_pred_model_full <-
+mean(pred_test_model_full != testset$Result)
+```
+
+\newpage
+
+# Select best CP
+
+Use CP table to see best CP
+
+```{r}
+printcp(tree_model_full)
+```
+```{r}
+mincp_model_fishing <- which.min(tree_model_full$cptable[, 'xerror'])
+```
+
+```{r}
+optCP_model_fishing <- tree_model_full$cptable[mincp_model_fishing, "CP"]
+print(optCP_model_fishing)
+```
+
+\newpage
+
+# Pruning decision tree
+
+```{r}
+mincp_model_fishing <- which.min(tree_model_full$cptable[, 'xerror'])
+tree_model_full$cptable 
+```
+```{r}
+optcp <- 3.207932e-03 
+```
+
+```{r}
+pruning_tree <- prune(tree_model_full, cp=optcp)
+rpart.plot(pruning_tree, main = "Pruning Decision Tree")
+```
+
+\newpage
+
+# Naive bayes
+
+To build a NB model, we will use the naiveBayes() function from the e1071 package
+
+```{r}
+library(e1071)
+nb <- naiveBayes(Result ~ ., data = trainset)
+
+print(nb)
+```
+
+```{r}
+nb.pred <- predict(nb, newdata = testset, type = 'class')
+head(nb.pred)
+```
+
+Then, create the confusion matrix:
+
+```{r}
+nb.cm <- table(true = testset$Result, predicted = nb.pred)
+nb.cm
+```
+
+The diagonal cells of the table indicate the number of correct predictions, while the off-diagonal cells indicate the number of incorrect predictions. In the table, **1317** instances with a true category of -phishing sites were correctly predicted as phishing sites, and **1768** instances with a true category of legitimate sites were correctly predicted as legitimate sites. However, **152** instances where the true category was phishing were incorrectly predicted as legitimate, and **79** instances where the true category was legitimate were incorrectly predicted as phishing.
+
+\newpage
+
+# Random forest
+
+```{r}
+library(randomForest)
+rf <- randomForest(Result ~ ., data = data,
+                   mtry = sqrt(ncol(data)-1), ntree = 300,
+                   proximity = T, importance = T)
+```
+
+```{r, results='asis'}
+print(rf)
+```
+
+The OOB error rate of our random forest model is **0.0312**.
+
+```{r}
+attributes(rf)
+```
+
+We plot the error rates with various number of trees.
+
+```{r}
+plot(rf)
+```
+
+The black line is the error rate on OOB, the red curve is the error rate for positive class, the green curve is for negative class. 
+
+```{r}
+randomForest::importance(rf, type=1)
+```
+
+\newpage
+
+Get the importance of variables by the function "importance()". Include type = 1 in the importance function to get the important variables based on MeanDecreaseAccuracy.
+
+```{r}
+varImpPlot(rf)
+```
+
+\newpage
+
+We obtain the predicted classes and predicted probabilities using the following codes.
+
+```{r}
+head(rf$predicted)
+```
+
+```{r}
+head(rf$votes)
+```
+```{r}
+pr.err <- c()
+for(mt in seq(1,ncol(trainset))){
+    library(randomForest)
+    rf1 <- randomForest(Result~., data = trainset, ntree = 100,
+                        mtry = ifelse(mt == ncol(trainset),
+                                      mt-1, mt))
+    predicted <- predict(rf1, newdata = testset, type = "class")
+    pr.err <- c(pr.err,mean(testset$Result != predicted))
+  }
+  bestmtry <- which.min(pr.err)
+```
+
+```{r}
+bestmtry 
+```
+
+The best mtry value based on our analysis is **12**.
+
+\newpage
+
+# Confusion matrix
+
+Use the table() function to construct the confusion matrix. Add the predicted categories and the actual labels to this function as input parameters.
+
+```{r}
+table(rf$predicted, data$Result, dnn = c("Predicted", "Actual"))
+```
+
+\newpage
+
+# Evaluation Charts
+
+To draw the evaluation charts we use “ROCR” package. We use the "ROCR" package to plot evaluation Two graphs are plotted based on prediction and performance. The predict() function takes two inputs: (1) the predicted probability of the positive class and (2) the true label. The output of the prediction function will be given to the performance() function to plot the graphs.
+
+```{r}
+library(ROCR)
+score <- rf$vote[, 2]
+pred <- prediction(score, data$Result)
+```
+
+# Gain Chart
+```{r}
+perf <- performance(pred, "tpr", "rpp")
+plot(perf)
+```
+
+\newpage
+
+# ROC Curve
+
+```{r}
+ perf <- performance(pred, "tpr", "fpr")
+plot(perf)
+```
+
+# Obtaining the Area Under the ROC Curve
+
+```{r}
+auc <- unlist(slot(performance(pred, "auc"), "y.values"))
+```
+
+```{r}
+auc 
+```
+
+The area under the curve of our ROC curve is **0.9955913**.
+
+\newpage
+
+# Determining the best cut-off point
+
+The performance() function for ROC curve returns tpr, fpr and alpha-values (cut-off points). Write a function that receives these information and returns the best cut-off point as the point closest to the corner [0, 1]. We can use the following code. The input argument to this function is perf (the output of the performance() function).
+
+```{r}
+opt.cut <- function(perf){
+  cut.ind <- mapply(FUN = function(x,y,p){d=(x-0)^2+(y-1)^2
+  ind <- which(d == min(d))
+  c(recall = y [[ind]], specificity = 1-x [[ind]], cutoff = p [[ind]])},
+  perf@x.values , perf@y.values, perf@alpha.values)
+}
+```
+
+```{r}
+opt.cut
+```
+
+The mapply function applies the function FUN to all **perf@x.values, perf@y.values,perf@alpha.values**. In the function FUN(), we first compute the distance of all the points on the ROC curve from the corner point [0,1]. These distance values are stored in the vector “d”. We then find the index of the point that is the closest point to the corner. This index is stored in the variable named “ind”. The output of this function is then the tpr, fpr and the probability threshold corresponding to this index.
+
+```{r}
+ctrl <- trainControl(method = "cv", number = 10)
+```
+
+```{r}
+library(naivebayes)
+```
+
+```{r}
+results_dt<- train(Result ~ ., data = trainset,
+method = "rpart", trControl = ctrl)
+
+
+results_nb<- train(Result ~ ., data = trainset,
+method = "naive_bayes", trControl = ctrl)
+
+results_rf<- train(Result ~ ., data = trainset,
+method = "rf", ntree = 500, trControl = ctrl)
+```
+
+```{r}
+results<- resamples(list(decision_tree = results_dt,
+naive_bayes = results_nb, random_forest = results_rf))
+summary(results)
+```
+
+The output is the summary of the results of resampling three models (decision_tree, naive_bayes, random_forest). The summary includes the accuracy and kappa scores for each model.
+
+For each model, the summary provides the minimum, first quartile, median, mean, third quartile, and maximum accuracy and kappa scores across 10 re-samples. The NAs column indicates if any missing values were present in the data.
+
+The accuracy score represents the proportion of correct predictions made by the model, while the kappa score measures the agreement between the predicted and actual classes, taking into account the possibility of agreement by chance.
+
+Overall, the **random_forest model** appears to have the highest accuracy and kappa scores, followed by the **decision_tree model** and then the **naive_bayes model**.
+
+\newpage
+
+\sectionfont{\centering}
+
+# References
+
+1. [How to solve Tex Memory Size Issue?](https://tex.stackexchange.com/questions/7953/how-to-expand-texs-main-memory-size-pgfplots-memory-overload)
+2. [RPart in Decision Trees in R](https://www.learnbymarketing.com/tutorials/rpart-decision-trees-in-r/)
+3. [Latex Engines](https://bookdown.org/yihui/rmarkdown/pdf-document.html#latex_engine)
+4. [Kable and KableExtra](https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_pdf.pdf)
+5. [Sizing Tables in PDF](https://community.rstudio.com/t/sizing-tables-in-pdf-documents-using-knitr-and-kableextra/19285/2)
+6. [RPart Plots in R](http://www.milbo.org/rpart-plot/prp.pdf)
